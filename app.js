@@ -8,37 +8,15 @@ App({
   },
   getSessionId: function (f_callback) {
     var _that = this;
-    wx.checkSession({
-      success: function () {
-        console.log("checkSession success,session 未过期，并且在本生命周期一直有效");
-        var _sessionId = wx.getStorageSync('sessionId');
-        if (!!_sessionId) {
-          console.log("get sessionId, sessionId=" + _sessionId);
-          if (!!f_callback != null && typeof f_callback === "function") {
-            f_callback(_sessionId);
-          } else {
-            console.log("getSessionId callback is not function");
-          }
-        } else {
-          if (!!f_callback != null && typeof f_callback === "function") {
-            _that.wxLogin(f_callback);
-          } else {
-            console.log("getSessionId callback is not function");
-          }
-        }
-      },
-      fail: function () {
-        console.log("checkSession fail ,登录态过期,重新登录");
-        console.log("wxLogin");
-        if (!!f_callback != null && typeof f_callback === "function") {
-          _that.wxLogin(f_callback);
-        } else {
-          console.log("getSessionId callback is not function");
-        }
-      }
-    });
+    var _sessionId = wx.getStorageSync('sessionId');
+    console.log("get sessionId, sessionId=" + _sessionId);
+    if (!!f_callback != null && typeof f_callback === "function") {
+      _that.wxLogin(_sessionId, f_callback);
+    } else {
+      console.log("getSessionId callback is not function");
+    }
   },
-  wxLogin: function (f_callback) {
+  wxLogin: function (p_sessionId, f_callback) {
     var _that = this;
     wx.login({
       success: function (e) {
@@ -48,6 +26,7 @@ App({
           wx.request({
             url: _that.globalData.server + '/wxAuth/createSssion',
             data: {
+              sessionId: p_sessionId,
               code: _code,
               appId: _that.globalData.appId
             },

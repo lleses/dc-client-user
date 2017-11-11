@@ -1,5 +1,3 @@
-//index.js
-//获取应用实例
 var app = getApp()
 Page({
   data: {
@@ -9,12 +7,10 @@ Page({
   onLoad: function (option) {
     var that = this;
     wx.request({
-      url: 'http://localhost:8080/index/detail',
+      url: app.globalData.server + '/commodity/detail',
       data: {
-        id: option.id
-      },
-      header: {
-        'content-type': 'application/json'
+        id: option.id,
+        orderNum: option.orderNum
       },
       success: function (res) {
         that.setData({

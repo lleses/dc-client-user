@@ -3,6 +3,7 @@
 var app = getApp()
 Page({
   data: {
+    server: app.globalData.server,
     titleColsNum: 1,
     types: null,
     typeIndex: 0,
@@ -57,7 +58,7 @@ Page({
   },
   toUrl: function (e) {
     wx.navigateTo({
-      url: '../detail/detail?id=' + e.target.dataset.selid,
+      url: '../detail/detail?id=' + e.target.dataset.selid + '&orderNum=' + e.target.dataset.num,
     })
   },
   addBuyNum: function (e) {
@@ -93,7 +94,7 @@ Page({
     app.getSessionId(function (p_sessionId) {
       console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: app.globalData.server + '/shoppingCart/less',
+        url: app.globalData.server + '/cart/less',
         data: {
           sessionId: p_sessionId,
           commodityId: e.target.dataset.buyId,

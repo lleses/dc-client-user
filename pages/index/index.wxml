@@ -6,7 +6,7 @@
 <div class="content_tab_show">
   <view wx:for="{{commoditys}}" wx:key="id">
     <div class="content_cols">
-      <image class="content_cols_image" data-selid="{{item.id}}" src="{{'http://localhost:8080'+item.imgPath}}" bindtap="toUrl"></image>
+      <image class="content_cols_image" data-selid="{{item.id}}" data-num="{{item.orderNum}}"  src="{{server+item.imgPath}}" bindtap="toUrl"></image>
       <span>{{item.name}}</span>
       <em>Y{{item.price}}</em>
       <view class="buy_view">

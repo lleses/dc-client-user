@@ -3,6 +3,7 @@
 <div class="detail_cols_2">已售105份</div>
 <div class="detail_cols_3">
   <div class="detail_cols_3_1">Y{{commodity.price}}</div>
-  <div class="detail_cols_3_2">X1</div>
+  <div class="detail_cols_3_2">X{{commodity.orderNum}}</div>
 </div>
 <div class="detail_cols_4">商品信息</div>
+<div class="detail_cols_4">{{commodity.remark}}</div>
