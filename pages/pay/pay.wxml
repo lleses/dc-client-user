@@ -1,27 +1,38 @@
-<div wx:for="{{shoppingCarts}}" class="pay_tab_1">
-  <div class="pay_cols1">{{item.commodity.name}}</div>
-  <div class="pay_cols2">X{{item.num}}</div>
-  <div class="pay_cols3">Y{{item.money}}</div>
-</div>
+<view class="tab1">
+  <view class="tab1_row2">联系信息</view>
+  <view class="tab1_row1">
+    <text class="tab_row_clos1">联系人</text>
+    <input class="tab_row_clos2" name="name" type="number" placeholder="收货人姓名" />
+  </view>
+  <view class="tab1_row1">
+    <text class="tab_row_clos1">联系电话</text>
+    <input class="tab_row_clos2" name="phone" type="number" placeholder="收货人电话" />
+  </view>
+  <view class="tab1_row1">
+    <text class="tab_row_clos3">送餐地址</text>
+    <view class="tab_row_clos4">
+      <input class="tab_row_clos5" name="phone" type="text" placeholder="小区/写字楼/学校等" />
+    </view>
+    <view class="tab_row_clos6">
+      <textarea class="tab_row_clos7" name="phone" type="text" placeholder="详细地址(如门牌号)" />
+    </view>
+  </view>
+</view>
 
-<div class="pay_tab_2">
-  <div class="pay_cols4 pay_cols_greed">总价</div>
-  <div class="pay_cols5">Y{{zj}}</div>
-</div>
-
-<!-- <div class="pay_tab_2">
-  <div class="pay_cols4 pay_cols_greed">原价</div>
-  <div class="pay_cols5">Y130.00</div>
-  <div class="pay_cols4 pay_cols_orange">折后价</div>
-  <div class="pay_cols5">Y130.00</div>
-</div> -->
-
-<!-- <div class="pay_tab_3">
-  <div class="pay_cols6">线下买单</div>
-  <div class="pay_cols7">余额支付</div>
-  <div class="pay_cols8">微信支付</div>
-</div> -->
+<view class="tab1">
+  <view class="tab1_row2">下单信息</view>
+  <view wx:for="{{carts}}" wx:key="id" class="tab1_row1">
+    <text class="tab_row_clos8">{{item.commodity.name}}</text>
+    <text class="tab_row_clos9">X{{item.num}}</text>
+    <text class="tab_row_clos9">Y{{item.money}}</text>
+  </view>
+  <view class="tab1_row1">
+    <text class="tab_row_clos10">总价</text>
+    <text class="tab_row_clos9"></text>
+    <text class="tab_row_clos9">Y{{zj}}</text>
+  </view>
+</view>
 
 <div class="pay_tab_3">
-  <div bindtap="paySuss" class="pay_cols8">微信支付</div>
+  <div bindtap="toPay" class="pay_cols8">微信支付</div>
 </div>

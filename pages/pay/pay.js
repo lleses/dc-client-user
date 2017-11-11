@@ -1,76 +1,39 @@
-//index.js
-//获取应用实例
 var app = getApp()
 Page({
   data: {
-    titleColsNum: 1,
-    userInfo: {},
-    shoppingCarts: {},
+    user:null,
+    carts: {},
     zj: 0
   },
-  onLoad: function () {
-    var that = this;
-    app.getUserId(function (userId) {
-      wx.request({
-        url: 'http://localhost:8080/shoppingCart/index',
-        data: {
-          userId: userId
-        },
-        success: function (res) {
-          var _shoppingCarts = res.data;
-          var _zj = 0;
-          for (var i = 0; i < _shoppingCarts.length; i++) {
-            _zj = _zj + _shoppingCarts[i].money;
-          }
-          that.setData({
-            shoppingCarts: _shoppingCarts,
-            zj: _zj
-          })
-        }
-      });
-    });
-  },
   onShow: function () {
-    var that = this;
-    app.getUserId(function (userId) {
+    var _that = this;
+    app.getSessionId(function (p_sessionId) {
+      console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: 'http://localhost:8080/shoppingCart/index',
+        url: app.globalData.server + '/cart/index',
         data: {
-          userId: userId
+          sessionId: p_sessionId
         },
         success: function (res) {
-          var _shoppingCarts = res.data;
+          var _user = res.data.user;
+          var _carts = res.data.cartRelationships;
           var _zj = 0;
-          for (var i = 0; i < _shoppingCarts.length; i++) {
-            _zj = _zj + _shoppingCarts[i].money;
+          for (var i = 0; i < _carts.length; i++) {
+            _zj = _zj + _carts[i].money;
           }
-          that.setData({
-            shoppingCarts: _shoppingCarts,
+          _that.setData({
+            user:_user,
+            carts: _carts,
             zj: _zj
           })
         }
       });
     });
   },
-  paySuss: function () {
-    var that = this;
-    app.getUserId(function (userId) {
-      wx.request({
-        url: 'http://localhost:8080/bill/save',
-        data: {
-          userId: userId
-        },
-        success: function (res) {
-          wx.showToast({
-            title: '支付成功',
-            success: function () {
-
-            }
-          });
-        }
-      });
-    });
-
-  }
+  toPay: function (e) {
+    wx.navigateTo({
+      url: '../to_pay/to_pay',
+    })
+  },
 })
 
