@@ -9,6 +9,11 @@
   white-space: nowrap;
 }
 
+.headImg {
+  width: 100%;
+  height: 115px;
+}
+
 .index_title_span {
   width: 150rpx;
   height: 40rpx;

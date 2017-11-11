@@ -8,82 +8,51 @@ Page({
     typeIndex: 0,
     typeId: null,
     commoditys: {},
-    shoppingCarts: {},
     userId: null
   },
-  onShow: function(){
-    var that = this;
-    app.getUserId(function (userId) {
-      //更新数据
-      that.setData({
-        userId: userId
-      });
-
+  onShow: function () {
+    console.log("onLoad--index");
+    var _that = this;
+    app.getSessionId(function (p_sessionId) {
+      console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: App.data.server+'/commodity_type/init_data',
+        url: app.globalData.server + '/commodity_type/init_data',
         data: {
-          userId: userId
+          sessionId: p_sessionId,
+          appId: app.globalData.appId
         },
         success: function (res) {
-          that.setData({
+          _that.setData({
             types: res.data.types,
             commoditys: res.data.commoditys,
-            shoppingCarts: res.data.shoppingCarts,
-            typeIndex:0
+            typeIndex: 0
           });
         }
       });
     });
-  },
-  onLoad: function () {
-    var that = this;
-    app.getUserId(function (userId) {
-      //更新数据
-      that.setData({
-        userId: userId
-      });
-
-      wx.request({
-        url: App.data.server+'/commodity_type/init_data',
-        data: {
-          userId: userId
-        },
-        success: function (res) {
-          that.setData({
-            types: res.data.types,
-            commoditys: res.data.commoditys,
-            shoppingCarts: res.data.shoppingCarts,
-            typeIndex:0
-          });
-        }
-      });
-    });
-
-    //调用应用实例的方法获取全局数据
-    // app.getUserInfo(function (userInfo) {
-    //   //更新数据
-    //   that.setData({
-    //     userInfo: userInfo
-    //   })
-    // })
   },
   selType: function (e) {
-    var that = this;
-    that.setData({
+    var _that = this;
+    console.log("selType--typeIndex:" + e.target.dataset.typeIndex + ",typeId:" + e.target.dataset.typeId);
+    _that.setData({
       typeIndex: e.target.dataset.typeIndex,
       typeId: e.target.dataset.typeId
     });
-    wx.request({
-      url: 'http://localhost:8080/commodity_type/selType',
-      data: {
-        commodityTypeId: e.target.dataset.typeId,
-        userId: that.data.userId
-      },
-      success: function (res) {
-        that.setData({
-          commoditys: res.data
-        });
-      }
+    app.getSessionId(function (p_sessionId) {
+      console.log("p_sessionId:" + p_sessionId);
+      wx.request({
+        url: app.globalData.server + '/commodity_type/selType',
+        data: {
+          sessionId: p_sessionId,
+          appId: app.globalData.appId,
+          commodityTypeId: e.target.dataset.typeId
+        },
+        success: function (res) {
+          _that.setData({
+            commoditys: res.data
+          });
+        }
+      });
     });
   },
   toUrl: function (e) {
@@ -92,51 +61,59 @@ Page({
     })
   },
   addBuyNum: function (e) {
-    var that = this;
-    wx.request({
-      url: 'http://localhost:8080/shoppingCart/add',
-      data: {
-        userId: that.data.userId,
-        commodityId: e.target.dataset.buyId,
-        price: e.target.dataset.comPrice
-      },
-      success: function (res) {
-        var commoditys = that.data.commoditys;
-        for (var i = 0; i < commoditys.length; i++) {
-          var _commodity = commoditys[i];
-          if (_commodity.id == e.target.dataset.buyId) {
-            _commodity.orderNum++;
-          }
-        }
-        that.setData({
-          commoditys: commoditys
-        });
-      }
-    });
-  },
-  lessBuyNum: function (e) {
-    var that = this;
-    wx.request({
-      url: 'http://localhost:8080/shoppingCart/less',
-      data: {
-        userId: that.data.userId,
-        commodityId: e.target.dataset.buyId,
-        price: e.target.dataset.comPrice
-      },
-      success: function (res) {
-        var commoditys = that.data.commoditys;
-        for (var i = 0; i < commoditys.length; i++) {
-          var _commodity = commoditys[i];
-          if (_commodity.id == e.target.dataset.buyId) {
-            if (_commodity.orderNum != 0) {
-              _commodity.orderNum--;
+    var _that = this;
+    app.getSessionId(function (p_sessionId) {
+      console.log("p_sessionId:" + p_sessionId);
+      wx.request({
+        url: app.globalData.server + '/cart/add',
+        data: {
+          sessionId: p_sessionId,
+          commodityId: e.target.dataset.buyId,
+          price: e.target.dataset.comPrice
+        },
+        success: function (res) {
+          var commoditys = _that.data.commoditys;
+          for (var i = 0; i < commoditys.length; i++) {
+            var _commodity = commoditys[i];
+            if (_commodity.id == e.target.dataset.buyId) {
+              _commodity.orderNum++;
             }
           }
+          _that.setData({
+            commoditys: commoditys
+          });
         }
-        that.setData({
-          commoditys: commoditys
-        });
-      }
+      });
+    });
+
+
+  },
+  lessBuyNum: function (e) {
+    var _that = this;
+    app.getSessionId(function (p_sessionId) {
+      console.log("p_sessionId:" + p_sessionId);
+      wx.request({
+        url: app.globalData.server + '/shoppingCart/less',
+        data: {
+          sessionId: p_sessionId,
+          commodityId: e.target.dataset.buyId,
+          price: e.target.dataset.comPrice
+        },
+        success: function (res) {
+          var commoditys = _that.data.commoditys;
+          for (var i = 0; i < commoditys.length; i++) {
+            var _commodity = commoditys[i];
+            if (_commodity.id == e.target.dataset.buyId) {
+              if (_commodity.orderNum != 0) {
+                _commodity.orderNum--;
+              }
+            }
+          }
+          _that.setData({
+            commoditys: commoditys
+          });
+        }
+      });
     });
   }
 })
