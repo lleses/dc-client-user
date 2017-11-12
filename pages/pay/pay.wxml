@@ -2,19 +2,19 @@
   <view class="tab1_row2">联系信息</view>
   <view class="tab1_row1">
     <text class="tab_row_clos1">联系人</text>
-    <input class="tab_row_clos2" name="name" type="number" placeholder="收货人姓名" />
+    <input bindtap="improveInformation" class="tab_row_clos2" name="name" value='{{name}}' disabled="true" type="number" placeholder="收货人姓名" />
   </view>
   <view class="tab1_row1">
     <text class="tab_row_clos1">联系电话</text>
-    <input class="tab_row_clos2" name="phone" type="number" placeholder="收货人电话" />
+    <input bindtap="improveInformation" class="tab_row_clos2" name="phone" value='{{phone}}' disabled="true" type="number" placeholder="收货人电话" />
   </view>
   <view class="tab1_row1">
     <text class="tab_row_clos3">送餐地址</text>
     <view class="tab_row_clos4">
-      <input class="tab_row_clos5" name="phone" type="text" placeholder="小区/写字楼/学校等" />
+      <input bindtap="improveInformation" class="tab_row_clos5" name="address" value='{{address}}' disabled="true" type="text" placeholder="小区/写字楼/学校等" />
     </view>
     <view class="tab_row_clos6">
-      <textarea class="tab_row_clos7" name="phone" type="text" placeholder="详细地址(如门牌号)" />
+      <textarea bindtap="improveInformation" class="tab_row_clos7" name="detailedAddress" value='{{detailedAddress}}' disabled="true" type="text" placeholder="详细地址(如门牌号)" />
     </view>
   </view>
 </view>
@@ -34,5 +34,5 @@
 </view>
 
 <div class="pay_tab_3">
-  <div bindtap="toPay" class="pay_cols8">微信支付</div>
+  <div bindtap="to_pay" class="pay_cols8">微信支付</div>
 </div>
