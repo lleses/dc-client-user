@@ -1,15 +1,8 @@
 var app = getApp()
 Page({
   data: {
-    motto: 'Hellobb Worlda',
     titleColsNum: 1,
     userInfo: {}
-  },
-  //事件处理函数
-  bindViewTap: function () {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
   },
   onLoad: function () {
     var that = this;

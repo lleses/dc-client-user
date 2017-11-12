@@ -51,11 +51,19 @@ App({
     });
   },
   getUserInfo: function (cb) {
-    var that = this
-    if (this.globalData.userInfo) {
-      typeof cb == "function" && cb(this.globalData.userInfo)
+    var _that = this
+    if (_that.globalData.userInfo) {
+      typeof cb == "function" && cb(_that.globalData.userInfo)
     } else {
       //调用登录接口
+      console.log("request getUserInfo");
+      wx.getUserInfo({
+        success: function (res) {
+          console.log("getUserInfo succ;");
+          _that.globalData.userInfo = res.userInfo;
+          typeof cb == "function" && cb(_that.globalData.userInfo);
+        }
+      })
     }
   },
   globalData: {
