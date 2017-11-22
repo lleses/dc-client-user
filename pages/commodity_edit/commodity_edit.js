@@ -14,7 +14,6 @@ Page({
     priceType: ['碟', '半打', '锅', '2只', '份', '串', '条', '包', '打', '大煲', '中煲', '小煲', '碗', '煲', '时价', '例', '斤', '只', '半只'],
     priceIndex: 0,
     priceTypeName: '碟',
-    userInfo: {},
     uploadImgPath: "",
     uploadImgSrc: "",
     commodityId: null,
@@ -23,12 +22,9 @@ Page({
   onLoad: function (option) {
     var that = this;
     wx.request({
-      url: 'http://localhost:8080/commodity/to_edit',
+      url: app.globalData.server + '/commodity/to_edit',
       data: {
         id: option.id
-      },
-      header: {
-        'content-type': 'application/json'
       },
       success: function (res) {
         var _priceIndex = 0;
@@ -42,7 +38,7 @@ Page({
           typeList: res.data.types,
           commodity: res.data.commodity,
           uploadImgPath: res.data.commodity.imgPath,
-          uploadImgSrc: "http://localhost:8080" + res.data.commodity.imgPath,
+          uploadImgSrc: app.globalData.server + res.data.commodity.imgPath,
           priceTypeName: res.data.commodity.priceType,
           priceIndex: _priceIndex,
           typeIndex: res.data.typeIndex,
@@ -50,14 +46,6 @@ Page({
           commodityId: res.data.commodity.id
         });
       }
-    })
-
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function (userInfo) {
-      //更新数据
-      that.setData({
-        userInfo: userInfo
-      })
     })
   },
   typePicker: function (e) {
@@ -99,7 +87,7 @@ Page({
       success: function (res) {
         var tempFilePaths = res.tempFilePaths
         wx.uploadFile({
-          url: 'http://localhost:8080/commodity/upload_img', //仅为示例，非真实的接口地址
+          url: app.globalData.server + '/commodity/upload_img', //仅为示例，非真实的接口地址
           filePath: tempFilePaths[0],
           name: 'file',
           formData: {},
@@ -109,7 +97,7 @@ Page({
             if (!!data) {
               that.setData({
                 uploadImgPath: data,
-                uploadImgSrc: "http://localhost:8080" + data,
+                uploadImgSrc: app.globalData.server + data,
                 isShowImg: 1
               });
               _msg = "上传成功";
@@ -135,12 +123,9 @@ Page({
       return;
     }
     wx.request({
-      url: 'http://localhost:8080/commodity_type/add',
+      url: app.globalData.server + '/commodity_type/add',
       data: {
         name: _typeName
-      },
-      header: {
-        'content-type': 'application/json'
       },
       success: function (res) {
         if (res.data == "0") {
@@ -167,12 +152,9 @@ Page({
   deleteCommodity: function (e) {
     var that = this;
     wx.request({
-      url: 'http://localhost:8080/commodity/del',
+      url: app.globalData.server + '/commodity/del',
       data: {
         id: that.data.commodityId
-      },
-      header: {
-        'content-type': 'application/json'
       },
       success: function (res) {
         //获取页面栈
@@ -208,12 +190,9 @@ Page({
       return;
     }
     wx.request({
-      url: 'http://localhost:8080/commodity_type/del',
+      url: app.globalData.server + '/commodity_type/del',
       data: {
         id: _selTypeId
-      },
-      header: {
-        'content-type': 'application/json'
       },
       success: function (res) {
         if (res.data == "0") {
@@ -264,7 +243,7 @@ Page({
 
     //提交表单
     wx.request({
-      url: 'http://localhost:8080/commodity/add',
+      url: app.globalData.server + '/commodity/add',
       data: {
         name: e.detail.value.name,
         commodityTypeId: e.detail.value.type,
@@ -274,9 +253,6 @@ Page({
         priceType: e.detail.value.priceType,
         imgPath: that.data.uploadImgPath,
         id: e.detail.value.id
-      },
-      header: {
-        'content-type': 'application/json'
       },
       success: function (res) {
         if (res.data == "0") {
