@@ -10,7 +10,7 @@
 <!-- 右边明细 -->
 <scroll-view scroll-y="true" class="row-2-right" style="height:{{screenHeight}}px;">
   <view bindtap="toEditUrl" data-selid="{{item.id}}" class="row-2-right-col" wx:for="{{commoditys}}">
-    <image data-selid="{{item.id}}" style="width:150rpx;height:150rpx;" src="{{'http://localhost:8080'+item.imgPath}}"></image>
+    <image data-selid="{{item.id}}" style="width:150rpx;height:150rpx;" src="{{server+item.imgPath}}"></image>
     <view data-selid="{{item.id}}" class="content">
       <view data-selid="{{item.id}}" class="name" style="margin-top:20rpx;">{{item.name}}</view>
       <view data-selid="{{item.id}}" class="price" style="color:red;margin-top:20rpx;">{{item.price}}元</view>

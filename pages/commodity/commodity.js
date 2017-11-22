@@ -9,6 +9,7 @@ Page({
     typeId: null,
     selId: null,
     commodityList: {},
+    server: app.globalData.server,
     screenHeight: 110
   },
   onShow: function () {
@@ -24,7 +25,7 @@ Page({
         app.getSessionId(function (p_sessionId) {
           console.log("p_sessionId:" + p_sessionId);
           wx.request({
-            url: app.globalData.server+'/commodity_type/init_data',
+            url: app.globalData.server + '/commodity_type/init_data',
             data: {
               sessionId: p_sessionId,
               appId: app.globalData.appId
@@ -54,7 +55,7 @@ Page({
       typeId: e.target.dataset.typeId
     });
     wx.request({
-      url: app.globalData.server +'/commodity_type/selType',
+      url: app.globalData.server + '/commodity_type/selType',
       data: {
         sessionId: p_sessionId,
         commodityTypeId: e.target.dataset.typeId
