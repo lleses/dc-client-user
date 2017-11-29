@@ -58,6 +58,7 @@ Page({
               detailedAddress: _that.data.detailedAddress
             },
             success: function (rs) {
+              console.log(_that.data.name);
             }
           });
         });

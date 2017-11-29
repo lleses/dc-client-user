@@ -1,4 +1,3 @@
-//index.js
 //获取应用实例
 var app = getApp()
 Page({
@@ -14,6 +13,9 @@ Page({
   onShow: function () {
     console.log("onLoad--index");
     var _that = this;
+    wx.showLoading({
+      title: '加载中',
+    });
     app.getSessionId(function (p_sessionId) {
       console.log("p_sessionId:" + p_sessionId);
       wx.request({
@@ -23,10 +25,19 @@ Page({
           appId: app.globalData.appId
         },
         success: function (res) {
+          wx.hideLoading();
           _that.setData({
             types: res.data.types,
             commoditys: res.data.commoditys,
             typeIndex: 0
+          });
+        },
+        fail: function () {
+          wx.hideLoading();
+          wx.showToast({
+            title: '网络异常',
+            success: function () {
+            }
           });
         }
       });

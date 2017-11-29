@@ -3,13 +3,13 @@
 </view>
 <!-- 左边菜单类型 -->
 <scroll-view scroll-y="true" class="row-2-left" style="height:{{screenHeight}}px;">
-  <view wx:for="{{types}}">
+  <view wx:for="{{types}}" wx:key="{{id}}">
     <span bindtap="selType" data-type-id="{{item.id}}" data-type-num="{{index}}" class="{{index==typeNum? 'sel':''}}">{{item.name}}</span>
   </view>
 </scroll-view>
 <!-- 右边明细 -->
 <scroll-view scroll-y="true" class="row-2-right" style="height:{{screenHeight}}px;">
-  <view bindtap="toEditUrl" data-selid="{{item.id}}" class="row-2-right-col" wx:for="{{commoditys}}">
+  <view bindtap="toEditUrl" data-selid="{{item.id}}" class="row-2-right-col" wx:for="{{commoditys}}" wx:key="{{id}}">
     <image data-selid="{{item.id}}" style="width:150rpx;height:150rpx;" src="{{server+item.imgPath}}"></image>
     <view data-selid="{{item.id}}" class="content">
       <view data-selid="{{item.id}}" class="name" style="margin-top:20rpx;">{{item.name}}</view>

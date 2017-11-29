@@ -1,4 +1,3 @@
-//app.js
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
@@ -32,6 +31,10 @@ App({
             },
             success: function (res) {
               var _sessionId = res.data;
+              if (!_sessionId) {
+                console.log("getSessionId is null");
+                return;
+              }
               console.log("save sessionId,  sessionId=" + _sessionId);
               wx.setStorageSync('sessionId', _sessionId);
               if (!!f_callback != null && typeof f_callback === "function") {
@@ -69,6 +72,6 @@ App({
   globalData: {
     userInfo: null,
     appId: "wx198ab4de814c9787",
-    server: 'http://localhost:8080'
+    server: 'https://gdzsdc.cn'
   }
 })

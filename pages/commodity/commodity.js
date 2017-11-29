@@ -1,4 +1,3 @@
-//index.js
 //获取应用实例
 var app = getApp()
 Page({
@@ -49,22 +48,25 @@ Page({
     })
   },
   selType: function (e) {
-    var that = this;
-    that.setData({
-      typeNum: e.target.dataset.typeNum,
-      typeId: e.target.dataset.typeId
-    });
-    wx.request({
-      url: app.globalData.server + '/commodity_type/selType',
-      data: {
-        sessionId: p_sessionId,
-        commodityTypeId: e.target.dataset.typeId
-      },
-      success: function (res) {
-        that.setData({
-          commoditys: res.data.commoditys
-        });
-      }
+    console.log("onLoad--commodity");
+    var _that = this;
+    app.getSessionId(function (p_sessionId) {
+      _that.setData({
+        typeNum: e.target.dataset.typeNum,
+        typeId: e.target.dataset.typeId
+      });
+      wx.request({
+        url: app.globalData.server + '/commodity_type/selType',
+        data: {
+          sessionId: p_sessionId,
+          commodityTypeId: e.target.dataset.typeId
+        },
+        success: function (res) {
+          _that.setData({
+            commoditys: res.data.commoditys
+          });
+        }
+      });
     });
   },
   toUrl: function () {

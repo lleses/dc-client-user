@@ -2,41 +2,12 @@
   "pages": [
     "pages/index/index",
     "pages/bill/bill",
-      "pages/member/member",
+    "pages/member/member",
     "pages/pay/pay",
-    
     "pages/commodity/commodity",
-    "pages/to_pay/to_pay",
-    
-    
-    
-    
-    
-    
-    
-
-   
     "pages/bill_detail/bill_detail",
-
-
-    
-    
-    
-    "pages/tc/tc",
-    "pages/tc_detail/tc_detail",
-    "pages/a_tc/a_tc",
-    "pages/a_tc_add/a_tc_add",
-    "pages/a_tc_edit/a_tc_edit",
-
-    
-    
     "pages/commodity_add/commodity_add",
     "pages/commodity_edit/commodity_edit",
-    
-    
-    
-  
-    
     "pages/detail/detail"
   ],
   "window": {
