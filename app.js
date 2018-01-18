@@ -23,14 +23,24 @@ App({
         console.log("login success ,code=" + _code);
         if (_code) {
           wx.request({
-            url: _that.globalData.server + '/wxAuth/createSssion',
+            url: _that.globalData.server + '/wx/createSession',
             data: {
               sessionId: p_sessionId,
               code: _code,
-              appId: _that.globalData.appId
+              appId: _that.globalData.appId,
+              clientType: "user"
             },
             success: function (res) {
-              var _sessionId = res.data;
+              if (!res.statusCode == 200) {
+                console.log(res.errMsg);
+                return;
+              }
+              var _rs = res.data;
+              if (_rs.code == 100) {
+                console.log(_rs.message);
+                return;
+              }
+              var _sessionId = _rs.data;
               if (!_sessionId) {
                 console.log("getSessionId is null");
                 return;
@@ -50,6 +60,7 @@ App({
       },
       fail: function (e) {
         console.log('login fail');
+        console.log(e);
       },
     });
   },
@@ -71,7 +82,8 @@ App({
   },
   globalData: {
     userInfo: null,
+    storeId: null,
     appId: "wx198ab4de814c9787",
-    server: 'https://gdzsdc.cn'
+    server: 'http://localhost:8080'
   }
 })

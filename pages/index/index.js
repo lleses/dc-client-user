@@ -3,12 +3,10 @@ var app = getApp()
 Page({
   data: {
     server: app.globalData.server,
-    titleColsNum: 1,
-    types: null,
-    typeIndex: 0,
-    typeId: null,
-    commoditys: {},
-    userId: null
+    productTypes: {},//产品类别
+    carts: [],//购物车
+    typeIndex: 0,//产品类别Index
+    typeId: null//产品类别ID
   },
   onShow: function () {
     console.log("onLoad--index");
@@ -19,17 +17,27 @@ Page({
     app.getSessionId(function (p_sessionId) {
       console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: app.globalData.server + '/commodity_type/init_data',
+        url: app.globalData.server + '/user/product/list',
         data: {
           sessionId: p_sessionId,
-          appId: app.globalData.appId
+          storeId: app.globalData.storeId
         },
         success: function (res) {
           wx.hideLoading();
+          if (!res.statusCode == 200) {
+            console.log(res.errMsg);
+            return;
+          }
+          var _rs = res.data;
+          console.log("list,返回信息----");
+          console.log(_rs);
+          if (_rs.code == 100) {
+            console.log(_rs.message);
+            return;
+          }
           _that.setData({
-            types: res.data.types,
-            commoditys: res.data.commoditys,
-            typeIndex: 0
+            productTypes: _rs.data.productTypes,
+            carts: _rs.data.carts
           });
         },
         fail: function () {
@@ -50,26 +58,10 @@ Page({
       typeIndex: e.target.dataset.typeIndex,
       typeId: e.target.dataset.typeId
     });
-    app.getSessionId(function (p_sessionId) {
-      console.log("p_sessionId:" + p_sessionId);
-      wx.request({
-        url: app.globalData.server + '/commodity_type/selType',
-        data: {
-          sessionId: p_sessionId,
-          appId: app.globalData.appId,
-          commodityTypeId: e.target.dataset.typeId
-        },
-        success: function (res) {
-          _that.setData({
-            commoditys: res.data
-          });
-        }
-      });
-    });
   },
   toUrl: function (e) {
     wx.navigateTo({
-      url: '../detail/detail?id=' + e.target.dataset.selid + '&orderNum=' + e.target.dataset.num,
+      url: '../detail/detail?id=' + e.target.dataset.selid,
     })
   },
   addBuyNum: function (e) {
@@ -77,22 +69,26 @@ Page({
     app.getSessionId(function (p_sessionId) {
       console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: app.globalData.server + '/cart/add',
+        url: app.globalData.server + '/user/cart/add',
         data: {
           sessionId: p_sessionId,
-          commodityId: e.target.dataset.buyId,
-          price: e.target.dataset.comPrice
+          storeId: app.globalData.storeId,
+          productId: e.currentTarget.dataset.productId
         },
         success: function (res) {
-          var commoditys = _that.data.commoditys;
-          for (var i = 0; i < commoditys.length; i++) {
-            var _commodity = commoditys[i];
-            if (_commodity.id == e.target.dataset.buyId) {
-              _commodity.orderNum++;
-            }
+          if (!res.statusCode == 200) {
+            console.log(res.errMsg);
+            return;
+          }
+          var _rs = res.data;
+          console.log("list,返回信息----");
+          console.log(_rs);
+          if (_rs.code == 100) {
+            console.log(_rs.message);
+            return;
           }
           _that.setData({
-            commoditys: commoditys
+            carts: _rs.data.carts
           });
         }
       });
@@ -103,28 +99,29 @@ Page({
     app.getSessionId(function (p_sessionId) {
       console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: app.globalData.server + '/cart/less',
+        url: app.globalData.server + '/user/cart/less',
         data: {
           sessionId: p_sessionId,
-          commodityId: e.target.dataset.buyId,
-          price: e.target.dataset.comPrice
+          storeId: app.globalData.storeId,
+          productId: e.currentTarget.dataset.productId
         },
         success: function (res) {
-          var commoditys = _that.data.commoditys;
-          for (var i = 0; i < commoditys.length; i++) {
-            var _commodity = commoditys[i];
-            if (_commodity.id == e.target.dataset.buyId) {
-              if (_commodity.orderNum != 0) {
-                _commodity.orderNum--;
-              }
-            }
+          if (!res.statusCode == 200) {
+            console.log(res.errMsg);
+            return;
+          }
+          var _rs = res.data;
+          console.log("list,返回信息----");
+          console.log(_rs);
+          if (_rs.code == 100) {
+            console.log(_rs.message);
+            return;
           }
           _that.setData({
-            commoditys: commoditys
+            carts: _rs.data.carts
           });
         }
       });
     });
   }
 })
-

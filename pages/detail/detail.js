@@ -1,20 +1,35 @@
 var app = getApp()
 Page({
   data: {
+    server: app.globalData.server,
     titleColsNum: 1,
-    commodity: null
+    product: null
   },
   onLoad: function (option) {
-    var that = this;
+    var _that = this;
+    wx.showLoading({
+      title: '加载中',
+    });
     wx.request({
-      url: app.globalData.server + '/commodity/detail',
+      url: app.globalData.server + '/user/product/detail',
       data: {
-        id: option.id,
-        orderNum: option.orderNum
+        id: option.id
       },
       success: function (res) {
-        that.setData({
-          commodity: res.data
+        wx.hideLoading();
+        if (!res.statusCode == 200) {
+          console.log(res.errMsg);
+          return;
+        }
+        var _rs = res.data;
+        console.log("list,返回信息----");
+        console.log(_rs);
+        if (_rs.code == 100) {
+          console.log(_rs.message);
+          return;
+        }
+        _that.setData({
+          product: _rs.data.product
         });
       }
     });

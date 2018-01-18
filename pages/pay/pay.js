@@ -1,37 +1,47 @@
 var app = getApp()
 Page({
   data: {
-    name: null,
-    phone: null,
-    address: null,
-    detailedAddress: null,
-    carts: {},
-    zj: 0
+    carts: [],
+    zj: 0, //总价
+    level: 0,
+    products: [],
+    name: "",
+    phone: "",
+    address: "",
+    detailedAddress: ""
   },
   onShow: function () {
     var _that = this;
+    wx.showLoading({
+      title: '加载中',
+    });
     app.getSessionId(function (p_sessionId) {
       console.log("p_sessionId:" + p_sessionId);
       wx.request({
-        url: app.globalData.server + '/cart/index',
+        url: app.globalData.server + '/user/cart/toPay',
         data: {
-          sessionId: p_sessionId
+          sessionId: p_sessionId,
+          storeId: app.globalData.storeId
         },
         success: function (res) {
-          var _user = res.data.user;
-          var _carts = res.data.cartRelationships;
-          var _zj = 0;
-          for (var i = 0; i < _carts.length; i++) {
-            _zj = _zj + _carts[i].money;
+          wx.hideLoading();
+          if (!res.statusCode == 200) {
+            console.log(res.errMsg);
+            return;
+          }
+          var _rs = res.data;
+          console.log("list,返回信息----");
+          console.log(_rs);
+          if (_rs.code == 100) {
+            console.log(_rs.message);
+            return;
           }
           _that.setData({
-            name: _user.name,
-            phone: _user.phone,
-            address: _user.address,
-            detailedAddress: _user.detailedAddress,
-            carts: _carts,
-            zj: _zj
-          })
+            carts: _rs.data.carts,
+            zj: _rs.data.zj,
+            level: _rs.data.level,
+            products: _rs.data.products
+          });
         }
       });
     });
@@ -46,23 +56,6 @@ Page({
           address: res.provinceName + " " + res.cityName + " " + res.countyName,
           detailedAddress: res.detailInfo
         });
-        app.getSessionId(function (p_sessionId) {
-          console.log("p_sessionId:" + p_sessionId);
-          wx.request({
-            url: app.globalData.server + '/cart/saveUserInfo',
-            data: {
-              sessionId: p_sessionId,
-              name: _that.data.name,
-              phone: _that.data.phone,
-              address: _that.data.address,
-              detailedAddress: _that.data.detailedAddress
-            },
-            success: function (rs) {
-              console.log(_that.data.name);
-            }
-          });
-        });
-
       }
     })
   },
@@ -87,7 +80,6 @@ Page({
       });
       return;
     }
-
     wx.showToast({
       title: '等待接口审批',
       success: function () {

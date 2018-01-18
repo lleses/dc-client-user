@@ -1,18 +1,22 @@
 <image src="/img/index_title.jpeg" class="headImg"></image>
 <scroll-view scroll-x="true" class="index_title">
-  <view wx:for="{{types}}" data-type-id="{{item.id}}" wx:key="id" data-type-index="{{index}}" bindtap="selType" class="index_title_span {{index==typeIndex ? 'title_cols':''}}">{{item.name}}</view>
+  <view wx:for="{{productTypes}}" data-type-id="{{item.id}}" wx:key="id" data-type-index="{{index}}" bindtap="selType" class="index_title_span {{index==typeIndex ? 'title_cols':''}}">{{item.name}}</view>
 </scroll-view>
 
 <div class="content_tab_show">
-  <view wx:for="{{commoditys}}" wx:key="id">
+  <view wx:for="{{productTypes[typeIndex].product}}" wx:key="id">
     <div class="content_cols">
-      <image class="content_cols_image" data-selid="{{item.id}}" data-num="{{item.orderNum}}"  src="{{server+item.imgPath}}" bindtap="toUrl"></image>
+      <image class="content_cols_image" data-selid="{{item.id}}" src="{{server+item.imgPath}}" bindtap="toUrl"></image>
       <span>{{item.name}}</span>
       <em>¥{{item.price}}</em>
       <view class="buy_view">
-        <image bindtap="addBuyNum" data-buy-id="{{item.id}}" data-com-price="{{item.price}}" class="img_icon_add" src="/img/icon_add.jpeg"></image>
-        <text class="buy_num {{item.orderNum==0 ? 'content_tab_hide':''}}">{{item.orderNum}}</text>
-        <image bindtap="lessBuyNum" data-buy-id="{{item.id}}" data-com-price="{{item.price}}" class="img_icon_less {{item.orderNum==0 ? 'content_tab_hide':''}}" src="/img/icon_less.jpeg"></image>
+        <image bindtap="addBuyNum" data-product-id="{{item.id}}" class="img_icon_add" src="/img/icon_add.jpeg"></image>
+        <block wx:for="{{carts}}" wx:for-item="c" wx:key="id">
+          <block wx:if="{{c.productId == item.id}}">
+            <text class="buy_num">{{c.num}}</text>
+            <image bindtap="lessBuyNum" data-product-id="{{item.id}}" class="img_icon_less" src="/img/icon_less.jpeg"></image>
+          </block>
+        </block>
       </view>
     </div>
   </view>

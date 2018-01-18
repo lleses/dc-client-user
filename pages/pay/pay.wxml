@@ -22,14 +22,18 @@
 <view class="tab1">
   <view class="tab1_row2">下单信息</view>
   <view wx:for="{{carts}}" wx:key="id" class="tab1_row1">
-    <text class="tab_row_clos8">{{item.commodity.name}}</text>
-    <text class="tab_row_clos9">X{{item.num}}</text>
-    <text class="tab_row_clos9">Y{{item.money}}</text>
+    <block wx:for="{{products}}" wx:for-item="p" wx:key="id">
+      <block wx:if="{{p.id == item.productId}}">
+        <text class="tab_row_clos8">{{p.name}}</text>
+        <text class="tab_row_clos9">X{{item.num}}</text>
+        <text class="tab_row_clos9">¥{{level==1?  p.memberPrice * item.num : p.price * item.num}}</text>
+      </block>
+    </block>
   </view>
   <view class="tab1_row1">
     <text class="tab_row_clos10">总价</text>
     <text class="tab_row_clos9"></text>
-    <text class="tab_row_clos9">Y{{zj}}</text>
+    <text class="tab_row_clos9">¥{{zj}}</text>
   </view>
 </view>
 

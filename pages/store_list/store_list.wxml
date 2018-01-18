@@ -1,0 +1,25 @@
+<view class="container">  
+  <!--list-->  
+  <view class="shopslist">  
+    <!--item-->  
+    <block wx:for="{{stores}}" wx:key="id">  
+      <view class="shops" bindtap="selStore" data-store-id="{{item.id}}">  
+        <!--左侧图片盒子-->  
+        <view>  
+          <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512416940591&di=373bfda32061d9c789962dab2858eb1e&imgtype=0&src=http%3A%2F%2Fimg1.efu.com.cn%2Fupfile%2Fbrand%2F2016-08%2F156d8553-064b-4951-81f2-bb3bcbd083db.jpg" class="shop-img" />  
+        </view>  
+        <!--右侧说明部分-->  
+        <view class="shop-cont">  
+          <!--上--店铺明-->  
+          <view class="shops-navigator">  
+            <text class="shop-name">{{item.name}}</text>  
+          </view>    
+          <!--下--店铺地址-->  
+          <view class="shop-address">  
+            <text>{{item.address}}</text>  
+          </view>  
+        </view>  
+      </view>  
+    </block>  
+  </view>  
+</view>
